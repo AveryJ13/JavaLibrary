@@ -1,12 +1,14 @@
 package com.ss.service;
 
 import com.company.AdminMenu;
+import com.company.Main;
 import com.ss.DAO.*;
 import com.ss.entity.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -29,15 +31,14 @@ public class AdministratorService {
 
                 System.out.println("ID: "+ e.get(i).getBookId() + " Title: " + e.get(i).getTitle());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             return "Books read successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read books - contact admin.";
         } finally {
             if (conn != null) {
@@ -57,15 +58,14 @@ public class AdministratorService {
 
                 System.out.println("ID: "+ a.get(i).getGenreId() + " Genre Name: " + a.get(i).getGenreName());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             return "Authors read successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read authors - contact admin.";
         } finally {
             if (conn != null) {
@@ -85,15 +85,14 @@ public class AdministratorService {
 
                 System.out.println("CardNo: "+ a.get(i).getCardNo() + " Name: " + a.get(i).getName() + " Address: " + a.get(i).getAddress() + " Phone: " + a.get(i).getPhone());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             return "Borrowers read successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read authors - contact admin.";
         } finally {
             if (conn != null) {
@@ -113,19 +112,18 @@ public class AdministratorService {
             for (int i = 0; i < a.size(); i++) {
                 System.out.println("ID: "+ a.get(i).getBookId() + " dueDate: " + a.get(i).getDueDate());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             if(a.size() >= 1){
                 return "Books are Due";
             }else{
                 return "";
             }
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read authors - contact admin.";
         } finally {
             if (conn != null) {
@@ -143,15 +141,17 @@ public class AdministratorService {
             List<Loans> a = ldao.readAllLoans();
             conn.commit();
             for (int i = 0; i < a.size(); i++) {
-                System.out.println("cardNo: " + a.get(i).getLoanCardNo()+ "  BookId  "+ a.get(i).getBookId() +"  dateOut" + a.get(i).getDateOut() +  "  dueDate: " + a.get(i).getDueDate());
+                System.out.println("cardNo: " + a.get(i).getLoanCardNo()+ "  BookId:  "+ a.get(i).getBookId() +"  dateOut: " + a.get(i).getDateOut() +  "  dueDate: " + a.get(i).getDueDate());
             }
 
-            return "loans read - contact admin.";
+            return "loans read ";
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read loans - contact admin.";
         } finally {
             if (conn != null) {
@@ -171,15 +171,14 @@ public class AdministratorService {
 
                 System.out.println("ID: "+ a.get(i).getAuthorId() + " Author Name: " + a.get(i).getAuthorName());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             return "Authors read successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to read authors - contact admin.";
         } finally {
             if (conn != null) {
@@ -199,9 +198,7 @@ public class AdministratorService {
                 System.out.println("ID: "+ a.get(i).getPublisherId() + " Publisher Name: " + a.get(i).getPublisherName() + " Publisher Address: " + a.get(i).getPublisherAddress() +
                         " Publisher Phone No: " + a.get(i).getPublisherPhone());
             }
-//            while (e.iterator().hasNext()){
-//                System.out.println("Book Title: " + e.getString("authorName"));
-//            }
+
             return "Publishers read successfully";
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -257,10 +254,11 @@ public class AdministratorService {
             return "Genre added successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update book - contact admin.";
         } finally {
             if (conn != null) {
@@ -312,13 +310,15 @@ public class AdministratorService {
 
             conn.commit();
             System.out.println("Book Updated Successfully");
+            AdminMenu.main(null);
             return "Book added successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update book - contact admin.";
         } finally {
             if (conn != null) {
@@ -345,14 +345,16 @@ public class AdministratorService {
             }
 
             conn.commit();
-            System.out.println("Genre Deleted Successfully");
-            return "Author Updated Successfully";
+
+            AdminMenu.main(null);
+            return "Genre Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to Delete Genre - contact admin.";
         } finally {
             if (conn != null) {
@@ -370,7 +372,7 @@ public class AdministratorService {
             readBooks();
             try{
                 Scanner scan = new Scanner(System.in);
-                System.err.println("Please select the book Id you wish to delete");
+                System.err.println("Please select the book Id you wish to delete, if the bookId is not valid, no operation will occur");
                 Integer deleteId = scan.nextInt();
                 scan.nextLine();
                 BookDAO bdao = new BookDAO(conn);
@@ -384,14 +386,16 @@ public class AdministratorService {
 
 
             conn.commit();
-            System.out.println("Book Deleted Successfully");
+
+            AdminMenu.main(null);
             return "Author Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to Delete Book - contact admin.";
         } finally {
             if (conn != null) {
@@ -424,13 +428,15 @@ public class AdministratorService {
 
             conn.commit();
             System.out.println("Author Updated Successfully");
+            AdminMenu.main(null);
             return "Author Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Author - contact admin.";
         } finally {
             if (conn != null) {
@@ -451,13 +457,15 @@ public class AdministratorService {
 
             conn.commit();
             System.out.println("Genre Updated Successfully");
+            AdminMenu.main(null);
             return "Genre Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Genre - contact admin.";
         } finally {
             if (conn != null) {
@@ -478,14 +486,15 @@ public class AdministratorService {
 
 
             conn.commit();
-            System.out.println("Author Updated Successfully");
+            AdminMenu.main(null);
             return "Author Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Author - contact admin.";
         } finally {
             if (conn != null) {
@@ -556,17 +565,20 @@ public class AdministratorService {
                 brdao.setBookCopies(book.getBookId(), branchId, noOfCopies);
 
             }
-
+            scan.nextLine();
             conn.commit();
             System.out.println("Book and Author added successfully");
             return "Book added successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to add book - contact admin.";
-        } finally {
+        }
+        finally {
             if (conn != null) {
                 conn.close();
             }
@@ -587,10 +599,11 @@ public class AdministratorService {
             return "Publisher added successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to add Publisher - contact admin.";
         } finally {
             if (conn != null) {
@@ -613,10 +626,11 @@ public class AdministratorService {
             return "Publisher Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Publisher - contact admin.";
         } finally {
             if (conn != null) {
@@ -634,7 +648,7 @@ public class AdministratorService {
             readPublishers();
             try{
                 Scanner scan = new Scanner(System.in);
-                System.err.println("Please select the Publisher Id you wish to delete");
+                System.err.println("Please select the Publisher Id you wish to delete, if Id value is not found no operation will occur");
                 Integer deleteId = scan.nextInt();
                 scan.nextLine();
                 PublisherDAO pdao = new PublisherDAO(conn);
@@ -644,14 +658,14 @@ public class AdministratorService {
             }
 
             conn.commit();
-            System.out.println("Publisher Deleted Successfully");
-            return "Author Updated Successfully";
+            return "Publisher Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to delete Publisher - contact admin.";
         } finally {
             if (conn != null) {
@@ -674,10 +688,11 @@ public class AdministratorService {
             return "Branch added successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to add Branch - contact admin.";
         } finally {
             if (conn != null) {
@@ -701,10 +716,11 @@ public class AdministratorService {
             return "Branch updated successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Branch - contact admin.";
         } finally {
             if (conn != null) {
@@ -737,14 +753,14 @@ public class AdministratorService {
 
 
             conn.commit();
-            System.out.println("Branch Deleted Successfully");
             return "Branch Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to delete Publisher - contact admin.";
         } finally {
             if (conn != null) {
@@ -767,10 +783,11 @@ public class AdministratorService {
             return "Borrower added successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to add Branch - contact admin.";
         } finally {
             if (conn != null) {
@@ -794,10 +811,11 @@ public class AdministratorService {
             return "Borrower updated successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Branch - contact admin.";
         } finally {
             if (conn != null) {
@@ -840,10 +858,11 @@ public class AdministratorService {
             return "Branch Updated Successfully";
 
         }catch ( SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to delete Publisher - contact admin.";
         } finally {
             if (conn != null) {
@@ -863,14 +882,14 @@ public class AdministratorService {
 
 
             conn.commit();
-            System.out.println("Due Date Updated Successfully");
-            return "DUe Date Updated Successfully";
+            return "Due Date Updated Successfully";
 
         }catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("Please check that your server is running and that you entered in the correct SQL data values");
             if (conn != null) {
                 conn.rollback();
             }
+            Main.main(null);
             return "Unable to update Author - contact admin.";
         } finally {
             if (conn != null) {

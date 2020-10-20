@@ -2,6 +2,7 @@ package com.ss.service;
 
 import com.company.BorrowerMenu;
 import com.company.LibrarianMenu;
+import com.company.Main;
 import com.ss.DAO.*;
 import com.ss.entity.*;
 
@@ -141,11 +142,12 @@ public class BorrowerService {
             conn.commit();
             return "Copies inserted successfully";
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            System.out.println("You have already checked out a copy of this book from this branch");
             if (conn != null) {
                 conn.rollback();
             }
-            System.err.println("unable to checkout book - contact admin.");
+            Main.main(null);
+
             return "Unable to checkout book - contact admin.";
         } finally {
             if (conn != null) {

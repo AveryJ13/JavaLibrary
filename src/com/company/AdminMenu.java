@@ -1,6 +1,7 @@
 package com.company;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -24,65 +25,162 @@ public class AdminMenu {
         System.err.println("3)Delete Book and Author");
         System.err.println("4)Read all Books and Authors");
         System.err.println("5)Back to Main");
-        System.err.println("Any)Exit");
-
-        Integer menuSelection = scan.nextInt();
-
-        if(menuSelection == 4){
-            System.err.println("1) Read Books");
-            System.err.println("2) Read Authors");
-            System.err.println("Any) Back to Admin");
-            menuSelection = scan.nextInt();
-
-            if(menuSelection == 1){
-                AS.readBooks();
-                System.err.println("1) Back to Admin");
-                System.err.println("Any) Exit");
-                menuSelection = scan.nextInt();
-                if (menuSelection == 1){
-                    adminMenuOne();
-                }else{
-                    System.out.println("Bye");
-                }
-            }else if(menuSelection == 2){
-                AS.readAuthors();
-                System.err.println("1) Back to Admin");
-                System.err.println("Any) Exit");
-                menuSelection = scan.nextInt();
-                if (menuSelection == 1){
-                    adminMenuOne();
-                }else{
-                    System.out.println("Bye");
-                }
-            }else if(menuSelection == 3){
-                System.out.println("Bye");
-            }
-        }else if(menuSelection == 1){
-            System.err.println("Enter the id of the publisher for the new Book");
-            AS.readPublishers();
-
-            Integer publisherId = scan.nextInt();
+        System.err.println("6)Exit");
+        try{
+            Integer menuSelection = scan.nextInt();
             scan.nextLine();
-
-            System.err.println("Enter in the name of the new book");
-
-            String bookTitle = scan.nextLine();
-
-            Book bk = new Book(null, bookTitle, publisherId);
-
-            AS.addBook(bk);
+            switch(menuSelection){
+                case 1:
+                    System.err.println("Enter the id of the publisher for the new Book");
+                    AS.readPublishers();
 
 
-        } else if (menuSelection == 5){
-            main(null);
-        }else if (menuSelection == 2){
-            adminUpdateBookAuthor();
-        }else if (menuSelection == 3){
-            deleteBookAndAuthor();
+                    Integer publisherId = scan.nextInt();
+                    scan.nextLine();
+
+                    System.err.println("Enter in the name of the new book");
+
+                    String bookTitle = scan.nextLine();
+
+                    Book bk = new Book(null, bookTitle, publisherId);
+
+                    AS.addBook(bk);
+                    break;
+                case 2:
+                    adminUpdateBookAuthor();
+                    break;
+                case 3:
+                    deleteBookAndAuthor();
+                    break;
+                case 4:
+                    System.err.println("1) Read Books");
+                    System.err.println("2) Read Authors");
+                    System.err.println("3) Back to Admin");
+                    menuSelection = scan.nextInt();
+                    scan.nextLine();
+
+                    switch(menuSelection){
+                        case 1:
+                            AS.readBooks();
+                            System.err.println("1) Back to Admin");
+                            System.err.println("2) Exit");
+                            menuSelection = scan.nextInt();
+                            scan.nextLine();
+                            switch(menuSelection){
+                                case 1:
+                                    main(null);
+                                    break;
+                                case 2:
+                                    System.exit(0);
+                                    break;
+                                default:
+                                    System.out.println("Please input a valid option");
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            AS.readAuthors();
+                            System.err.println("1) Back to Admin");
+                            System.err.println("2) Exit");
+                            menuSelection = scan.nextInt();
+                            scan.nextLine();
+                            switch(menuSelection){
+                                case 1:
+                                    main(null);
+                                    break;
+                                case 2:
+                                    System.exit(0);
+                                    break;
+                                default:
+                                    System.out.println("Please input a valid option");
+                                    break;
+                            }
+
+                            break;
+
+                    }
+
+                        break;
+                case 5:
+                    main(null);
+                    break;
+                case 6:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Please input one of the options above");
+                    adminMenuOne();
+                    break;
+            }
+        }catch(InputMismatchException e){
+
+            System.out.println("Please input an integer value");
+            adminMenuOne();
+        }catch(SQLIntegrityConstraintViolationException e){
+            System.out.println("The server will not process your request, check your parameter values and try again");
+            adminMenuOne();
         }
-        else{
-            System.out.println("Bye");
-        }
+
+
+
+
+
+
+//        if(menuSelection == 4){
+//            System.err.println("1) Read Books");
+//            System.err.println("2) Read Authors");
+//            System.err.println("Any) Back to Admin");
+//            menuSelection = scan.nextInt();
+//
+//            if(menuSelection == 1){
+//                AS.readBooks();
+//                System.err.println("1) Back to Admin");
+//                System.err.println("Any) Exit");
+//                menuSelection = scan.nextInt();
+//                if (menuSelection == 1){
+//                    adminMenuOne();
+//                }else{
+//                    System.out.println("Bye");
+//                }
+//            }else if(menuSelection == 2){
+//                AS.readAuthors();
+//                System.err.println("1) Back to Admin");
+//                System.err.println("Any) Exit");
+//                menuSelection = scan.nextInt();
+//                if (menuSelection == 1){
+//                    adminMenuOne();
+//                }else{
+//                    System.out.println("Bye");
+//                }
+//            }else if(menuSelection == 3){
+//                System.out.println("Bye");
+//            }
+//        }else if(menuSelection == 1){
+//            System.err.println("Enter the id of the publisher for the new Book");
+//            AS.readPublishers();
+//
+//            Integer publisherId = scan.nextInt();
+//            scan.nextLine();
+//
+//            System.err.println("Enter in the name of the new book");
+//
+//            String bookTitle = scan.nextLine();
+//
+//            Book bk = new Book(null, bookTitle, publisherId);
+//
+//            AS.addBook(bk);
+//
+//
+//        } else if (menuSelection == 5){
+//            main(null);
+//        }else if (menuSelection == 2){
+//            adminUpdateBookAuthor();
+//        }else if (menuSelection == 3){
+//            deleteBookAndAuthor();
+//        }
+//        else{
+//            System.out.println("Bye");
+//        }
 
 
     }
@@ -136,6 +234,7 @@ public class AdminMenu {
 
                     } catch (InputMismatchException e){
                         System.err.println("Please input the correct value types");
+                        adminUpdateBookAuthor();
                     }
                     break;
                 case 2:
@@ -234,10 +333,10 @@ public class AdminMenu {
                 case 6:
                     AdministratorService AS = new AdministratorService();
                     AS.readAllLoans();
-                    System.err.println("Please input the cardNo of the loan you wish to override");
+                    System.err.println("Please input the cardNo of the loan you wish to override, if invalid value is entered no change will be made");
                     Integer cardNo = scan.nextInt();
                     scan.nextLine();
-                    System.err.println("Please input the BookNo of the loan you wish to override");
+                    System.err.println("Please input the BookNo of the loan you wish to override, if invalid value is entered no change will be made");
                     Integer bookId = scan.nextInt();
                     scan.nextLine();
                     AS.overrideDueDate(cardNo, bookId);

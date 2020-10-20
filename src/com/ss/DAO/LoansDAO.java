@@ -17,7 +17,8 @@ public class LoansDAO extends BaseDAO<Loans>{
     }
 
     public List<Loans> readAllLoans() throws SQLException, ClassNotFoundException {
-        return read("SELECT * FROM tbl_book_loans",null);
+        return read("select tbl.bookId, branchId, cardNo, dateOut, dueDate, dateIn, title  from tbl_book_loans tbl\n" +
+                "inner join tbl_book bk where tbl.bookId = bk.bookId",null);
     }
 
     public List<Loans> readCurrentUserLoans(Integer cardNo) throws SQLException, ClassNotFoundException {
